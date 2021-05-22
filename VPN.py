@@ -4,6 +4,9 @@ import subprocess
 def ChooseVPN():
 	VPNs = os.listdir("/opt/VPNs")
 	for value in enumerate(VPNs,1):
+	    if not value[1].endswith(".ovpn"):
+		pass
+	    else:
 		print(f"[{value[0]}] : {value[1]}")
 	print("[?] : Input the VPN Number you wish to use \n ")
 	while 1:
