@@ -3,7 +3,7 @@ import shutil
 import sys 
 
 # Notes : 
-# Run with Sudo as it make the files otherwise 
+# Run with Sudo as it makes PermissionErrors otherwise 
 # Syntax `sudo python3 setup.py` 
 
 VPNFiles = sys.argv
