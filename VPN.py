@@ -38,7 +38,7 @@ class Notify():
 		'Get infomation from user'
 		input(f"{Color.QuestionColor}[?] - {Message}{Color.RESET}")
   
-    def OutputVPNS(Value):
+    def OutputVPNs(Value):
         'Specific to this code; uses format to print numbers then names'
         print(f"{NumColor}{Value[0]}{RESET} : {ActiveColor}{Value[1]}{RESET}")
 
@@ -50,7 +50,7 @@ def ChooseVPN():
 		if not value[1].endswith(".ovpn"):
 			pass
 		else:
-			Notify.OutputVPNS(value)
+			Notify.OutputVPNs(value)
 	Selected = Notify.Question("Input the VPN Number you wish to use\n> ")
 	while 1:
 		try:
