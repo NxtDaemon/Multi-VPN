@@ -1,8 +1,9 @@
 import os
 import subprocess 
+import time 
 
 class Color:
-	# If you wish to use custom colors add them here and change the varibles below
+    'Class for Colors to be used in Execution'
     PURPLE = '\033[95m'
     CYAN = '\033[96m'
     DARKCYAN = '\033[36m'
@@ -11,16 +12,35 @@ class Color:
     YELLOW = '\033[93m'
     RED = '\033[91m'
     BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    BLINKING = '\033[5m'
     RESET = '\033[0m'
 
-ActiveColor = Color.GREEN
-QuestionColor = Color.BOLD+Color.YELLOW
-ErrorColor = Color.RED
-NumColor = Color.PURPLE+Color.BOLD
-NotificationColor = Color.CYAN
-RESET = Color.RESET
+    QuestionColor = BOLD+YELLOW
+    ErrorColor = RED+BOLD
+    InfoColor = CYAN 
+    SuccessColor = GREEN
+
+class Notify():
+	'Managed what type of message is sent'
+
+	def Error(Message):
+		'Error Messages'
+		print(f"{Color.ErrorColor}[!] - {Message}{Color.RESET}")
+
+	def Info(Message):
+		'Infomation Messages'
+		print(f"{Color.InfoColor}[*] - {Message}{Color.RESET}")
+
+	def Success(Message):
+		'Success Messages'
+		print(f"{Color.SuccessColor}[$] - {Message}{Color.RESET}")
+
+	def Question(Message):
+		'Get infomation from user'
+		input(f"{Color.QuestionColor}[?] - {Message}{Color.RESET}")
+  
+    def OutputVPNS(Value):
+        'Specific to this code; uses format to print numbers then names'
+        print(f"{NumColor}{Value[0]}{RESET} : {ActiveColor}{Value[1]}{RESET}")
 
 
 def ChooseVPN():
@@ -30,23 +50,23 @@ def ChooseVPN():
 		if not value[1].endswith(".ovpn"):
 			pass
 		else:
-			print(f"{NumColor}[{value[0]}]{RESET} : {ActiveColor}{value[1]}{RESET}")
-	print("\n[?] : Input the VPN Number you wish to use \n ")
+			Notify.OutputVPNS(value)
+	Selected = Notify.Question("Input the VPN Number you wish to use\n> ")
 	while 1:
 		try:
-			Selected = int(input(f"{QuestionColor}>{RESET} "))-1
+			Selected = int(Selected)-1
 			return(VPNs[Selected]) 
 		except IndexError:
-			print(f"{ErrorColor}Sorry, The Number you Entered is not in the VPNs List{RESET}")
+            Notify.Error("Sorry, The Number you Entered is not in the VPNs List")
 		except ValueError:
-			print(f"{ErrorColor}Input Must be Numeric; Enter a Number{RESET}")
+			Notify.Error("Input Must be Numeric; Enter a Number")
 		except EOFError:
-			print(f"{ErrorColor}Found `Ctrl+D` use Ctrl+C {RESET}")
+			Notify.Error("Found `Ctrl+D` use Ctrl+C")
 		except Exception as Exc:
-			print(f"{ErrorColor}Unexpected Error : {Exc} Class : {type(Exc).__name__}{RESET}")
+			Notify.Error(f"Unexpected Error : {Exc}\nClass : {type(Exc).__name__}")
 
 def SetVPN(VPN):
-	'Call the openvpn command and handle commands'
+	'Call the OpenVPN command'
 	Process = subprocess.call(["sudo","openvpn",f"/opt/VPNs/{VPN}"])
 
 if __name__ == "__main__":
@@ -56,7 +76,8 @@ if __name__ == "__main__":
 	# '$(Username) ALL=(all) NOPASSWD: $(which openvpn)'
 	# But ofc replace username and the value from 'which openvpn'
 	# Also imo its a nice idea to add an alias for this so add something like `alias vpn="python3 $(location of VPN.py)"
-	print(f"{NotificationColor}Starting VPN Now \n{RESET}")
-	SetVPN(VPN)
-	print(f"{Color.RESET}")
+	Notify.Success("Starting VPN Now")
+    time.sleep(1)
+    SetVPN(VPN)
+	
 
