@@ -25,10 +25,12 @@ class Color:
     BOLD = '\033[1m'
     RESET = '\033[0m'
 
+    NumColor = DARKCYAN
     QuestionColor = BOLD+YELLOW
     ErrorColor = RED+BOLD
     InfoColor = CYAN 
     SuccessColor = GREEN
+    InputColor = GREEN+BOLD
 
 class Notify():
 	'Managed what type of message is sent'
@@ -47,11 +49,11 @@ class Notify():
 
 	def Question(Message):
 		'Get infomation from user'
-		input(f"{Color.QuestionColor}[?] - {Message}{Color.RESET}")
-  
-        def OutputVPNs(Value):
-               'Specific to this code; uses format to print numbers then names'
-               print(f"{NumColor}{Value[0]}{RESET} : {ActiveColor}{Value[1]}{RESET}")
+		return(input(f"{Color.QuestionColor}[?] - {Message}{Color.RESET}\n{Color.InputColor}>{Color.RESET}"))
+
+	def OutputVPNs(Value):
+		'Specific to this code; uses format to print numbers then names'
+		print(f"{Color.NumColor}{Value[0]}{Color.RESET} : {Color.InfoColor}{Value[1]}{Color.RESET}")
 
 
 def ChooseVPN():
@@ -62,17 +64,20 @@ def ChooseVPN():
 			pass
 		else:
 			Notify.OutputVPNs(value)
-	Selected = Notify.Question("Input the VPN Number you wish to use\n> ")
 	while 1:
 		try:
-			Selected = int(Selected)-1
-			return(VPNs[Selected]) 
+			Selected = Notify.Question("Input the VPN Number you wish to use")
+			if Selected.lower() == "exit":
+				exit()
+			else: 
+				Selected = int(Selected)
+				return(VPNs[Selected]) 
 		except IndexError:
-            Notify.Error("Sorry, The Number you Entered is not in the VPNs List")
+			Notify.Error("Sorry, The Number you Entered is not in the VPNs List")
 		except ValueError:
 			Notify.Error("Input Must be Numeric; Enter a Number")
 		except EOFError:
-			Notify.Error("Found `Ctrl+D` use Ctrl+C")
+			Notify.Error("Found `Ctrl+D` use Ctrl+C or type 'Exit'")
 		except Exception as Exc:
 			Notify.Error(f"Unexpected Error : {Exc}\nClass : {type(Exc).__name__}")
 
@@ -88,7 +93,7 @@ if __name__ == "__main__":
 	# But ofc replace username and the value from 'which openvpn'
 	# Also imo its a nice idea to add an alias for this so add something like `alias vpn="python3 $(location of VPN.py)"
 	Notify.Success("Starting VPN Now")
-    time.sleep(1)
-    SetVPN(VPN)
+	time.sleep(1)
+	SetVPN(VPN)
 	
 
