@@ -70,7 +70,7 @@ def ChooseVPN():
 			if Selected.lower() == "exit":
 				exit()
 			else: 
-				Selected = int(Selected)
+				Selected = int(Selected)-1
 				return(VPNs[Selected]) 
 		except IndexError:
 			Notify.Error("Sorry, The Number you Entered is not in the VPNs List")
