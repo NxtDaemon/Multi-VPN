@@ -12,3 +12,7 @@ Ability to use multiple VPNs from the same command with little config, only uses
 ## Using VPN.py 
 Simply run the file ensuring you have completed prior steps with the following `python3 VPN.py`.
 However if like me you wish to type less add `alias vpn="python3 $(location of VPN.py)` to your ~/.zsh_aliases file or equivalent for other shells 
+
+## Archive 
+This project is now done to the standard I want it to be and dont see anything interesting or good I could futher changes within it <br> 
+should you think of anything please do contact me and i'll implement it at https://nxtdaemon.xyz/contact
